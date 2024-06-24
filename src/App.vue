@@ -98,6 +98,18 @@ export default {
     editToDo(toDoId, newLabel) {
       const idx = this.ToDoItems.findIndex(item => toDoId == item.id);
       this.ToDoItems[idx].label = newLabel;
+
+      const formData = new FormData();
+      formData.append('label', this.ToDoItems[idx].label);
+      formData.append('todo_uuid', this.ToDoItems[idx].todo_uuid);
+      formData.append('done', this.ToDoItems[idx].done);
+
+      axios({
+        method: 'post', 
+        url: 'http://localhost:8000/api-sileo/todo/todo/update/?pk=' + toDoId,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" }
+      })
     },
   },
   computed: {
