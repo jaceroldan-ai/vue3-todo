@@ -75,7 +75,6 @@ export default {
     updateDoneStatus(toDoId) {
       const idx = this.ToDoItems.findIndex(item => toDoId == item.id);
       this.ToDoItems[idx].done = !this.ToDoItems[idx].done;
-      console.log(this.ToDoItems[idx]);
       const formData = new FormData();
       formData.append('label', this.ToDoItems[idx].label);
       formData.append('todo_uuid', this.ToDoItems[idx].todo_uuid);
@@ -91,6 +90,10 @@ export default {
     deleteToDo(toDoId) {
       const idx = this.ToDoItems.findIndex(item => toDoId == item.id);
       this.ToDoItems.splice(idx, 1);
+      axios({
+        method: 'post',
+        url: 'http://localhost:8000/api-sileo/todo/todo/delete/?pk=' + toDoId,
+      })
     },
     editToDo(toDoId, newLabel) {
       const idx = this.ToDoItems.findIndex(item => toDoId == item.id);
