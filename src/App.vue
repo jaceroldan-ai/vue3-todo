@@ -57,7 +57,7 @@ export default {
 
     addToDo(toDoLabel) {
       this.ToDoItems.push({
-        id: uniqueId("todo-"),
+        todo_uuid: uniqueId("todo-"),
         label: toDoLabel,
         done: false
       });
@@ -67,14 +67,26 @@ export default {
 
       axios({
         method: 'post',
-        url: 'http:///localhost:8000/api-sileo/todo/todo/create/',
+        url: 'http://localhost:8000/api-sileo/todo/todo/create/',
         data: formData,
         headers: { "Content-Type": "multipart/form-data" }
       });
     },
     updateDoneStatus(toDoId) {
       const idx = this.ToDoItems.findIndex(item => toDoId == item.id);
-      this.ToDoItems[idx].done = true;
+      this.ToDoItems[idx].done = !this.ToDoItems[idx].done;
+      console.log(this.ToDoItems[idx]);
+      const formData = new FormData();
+      formData.append('label', this.ToDoItems[idx].label);
+      formData.append('todo_uuid', this.ToDoItems[idx].todo_uuid);
+      formData.append('done', this.ToDoItems[idx].done);
+
+      axios({
+        method: 'post', 
+        url: 'http://localhost:8000/api-sileo/todo/todo/update/?pk=' + toDoId,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" }
+      })
     },
     deleteToDo(toDoId) {
       const idx = this.ToDoItems.findIndex(item => toDoId == item.id);
