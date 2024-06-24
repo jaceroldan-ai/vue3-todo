@@ -44,7 +44,17 @@ export default {
       ],
     };
   },
+
+  created() {
+    this.retrieveToDos();
+  },
+
   methods: {
+    async retrieveToDos() {
+      const response = await axios.get('http://localhost:8000/api-sileo/todo/todo/filter/');
+      this.ToDoItems = response.data.data;
+    },
+
     addToDo(toDoLabel) {
       this.ToDoItems.push({
         id: uniqueId("todo-"),
