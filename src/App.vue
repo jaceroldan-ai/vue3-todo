@@ -22,6 +22,7 @@
 import ToDoItem from "./components/ToDoItem.vue";
 import ToDoForm from "./components/ToDoForm.vue";
 import uniqueId from "lodash.uniqueid";
+import axios from 'axios';
 
 export default {
   name: "app",
@@ -49,6 +50,16 @@ export default {
         id: uniqueId("todo-"),
         label: toDoLabel,
         done: false
+      });
+      const formData = new FormData();
+      formData.append('todo_uuid', uniqueId("todo-"));
+      formData.append('label', toDoLabel);
+
+      axios({
+        method: 'post',
+        url: 'http:///localhost:8000/api-sileo/todo/todo/create/',
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" }
       });
     },
     updateDoneStatus(toDoId) {
